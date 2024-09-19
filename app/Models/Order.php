@@ -14,5 +14,10 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+    public function orderItems(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
 
 }
