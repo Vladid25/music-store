@@ -28,9 +28,24 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        Product::create($request->all());
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+        } else {
+            $imageName = null;
+        }
+
+        Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'category_id' => $request->category_id,
+            'image' => $imageName
+        ]);
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
@@ -45,19 +60,28 @@ class ProductController extends Controller
         return view('products.edit', compact('product', 'categories'));
     }
 
-    public function update(Request $request, Product $product): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $product->image = $imageName;
+        }
+
         $product->update($request->all());
+
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
+
 
     public function destroy(Product $product): \Illuminate\Http\RedirectResponse
     {

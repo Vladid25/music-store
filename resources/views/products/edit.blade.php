@@ -39,6 +39,14 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="image">Product Image</label>
+                    <input type="file" name="image" class="form-control">
+                    @if ($product->image)
+                        <img src="{{ asset('images/' . $product->image) }}" alt="{{ $product->name }}" width="100">
+                    @endif
+                </div>
+
 
                 <button type="submit" class="btn btn-primary">Update</button>
                 <a href="{{ route('products.index') }}" class="btn btn-secondary">Back</a>

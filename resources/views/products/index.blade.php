@@ -24,6 +24,14 @@
                         <td>${{ number_format($product->price, 2) }}</td>
                         <td>{{ $product->quantity }}</td>
                         <td>
+                            @if ($product->image)
+                                <img src="{{ asset('images/' . $product->image) }}" alt="{{ $product->name }}" width="100">
+                            @else
+                                No Image
+                            @endif
+                        </td>
+
+                        <td>
                             <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning">Edit</a>
                             <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline-block">
                                 @csrf
