@@ -23,8 +23,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="stock_quantity">Stock Quantity</label>
-                    <input type="number" name="stock_quantity" id="stock_quantity" class="form-control" required>
+                    <label for="quantity">Stock Quantity</label>
+                    <input type="number" name="quantity" id="quantity" class="form-control" required>
                 </div>
 
                 <div class="form-group">

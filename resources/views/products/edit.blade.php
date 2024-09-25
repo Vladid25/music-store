@@ -25,8 +25,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="stock_quantity">Stock Quantity</label>
-                    <input type="number" name="stock_quantity" id="stock_quantity" class="form-control" value="{{ $product->stock_quantity }}" required>
+                    <label for="quantity">Stock Quantity</label>
+                    <input type="number" name="quantity" id="quantity" class="form-control" value="{{ $product->quantity }}" required>
                 </div>
 
                 <div class="form-group">
