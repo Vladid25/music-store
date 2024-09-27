@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LabController;
 use App\Http\Middleware\CheckAge;
@@ -14,6 +15,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
 
 Route::resource('products', ProductController::class);
 
