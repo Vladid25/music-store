@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/products/{id}', [\App\Http\Controllers\HomeController::class, 'details'])->name('products.details');
 
 
 Route::get('/dashboard', function () {
