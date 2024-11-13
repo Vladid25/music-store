@@ -52,7 +52,7 @@ class AdminController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
-        return view('products.edit', compact('categories','product'));
+        return view('admin.products.edit', compact('categories','product'));
     }
 
     public function update(Request $request, Product $product)
@@ -63,12 +63,12 @@ class AdminController extends Controller
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Optional image validation
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public'); // Store in 'public/images'
-            $product->image = $imagePath; // Update the image path
+            $imagePath = $request->file('image')->store('images', 'public'); 
+            $product->image = $imagePath; 
         }
 
         $product->update([
