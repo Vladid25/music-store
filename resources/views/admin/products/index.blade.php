@@ -52,11 +52,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if ($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" 
-                                         alt="{{ $product->name }}" 
-                                         class="w-12 h-12 rounded-lg object-cover shadow-sm hover:shadow-md transition duration-150 ease-in-out">
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-12 h-12 rounded-lg object-cover shadow-sm hover:shadow-md transition duration-150 ease-in-out">
                                 @else
-                                    <span class="text-sm text-gray-500 italic">No Image</span>
+                                <span class="text-sm text-gray-500 italic">No Image</span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
