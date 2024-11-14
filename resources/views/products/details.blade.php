@@ -10,46 +10,31 @@
             </div>
 
             <div class="flex flex-col md:flex-row">
-                <div class="flex flex-wrap -mx-6">
-                    <div class="w-full md:w-1/2 p-6 flex flex-col items-center">
-                        <img class="w-full max-h-[400px] object-contain" src="{{ asset('images/' . $product->image) }}" alt="{{ $product->name }}">
-
-                        <div class="mt-4 flex space-x-2">
-                            <img src="{{ asset('images/' . $product->image) }}" class="w-16 h-16 object-cover border rounded" alt="thumbnail">
-                            <img src="{{ asset('images/' . $product->image) }}" class="w-16 h-16 object-cover border rounded" alt="thumbnail">
-                            <img src="{{ asset('images/' . $product->image) }}" class="w-16 h-16 object-cover border rounded" alt="thumbnail">
-                        </div>
-
-                        <div class="mt-4">
-                            <i class="fas fa-play-circle text-4xl text-gray-600 cursor-pointer"></i>
-                        </div>
+                <div class="flex flex-wrap -mx-4">
+                    <div class="w-full md:w-1/2 p-4 flex flex-col items-center">
+                        <img class="w-full h-64 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300" src="{{ asset($product->image) }}" alt="{{ $product->name }}">
                     </div>
 
-                    <div class="w-full md:w-1/2 p-6">
-                        <div class="flex justify-between items-start">
-                            <h1 class="text-3xl font-bold text-gray-900">{{ $product->name }}</h1>
-                            <img src="{{ asset('images/logo.png') }}" alt="Brand Logo" class="h-10">
+                    <div class="w-full md:w-1/2 p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="text-gray-500 mt-2">
+                                Наявність: <span class="font-semibold text-green-600">На складі</span><br>
+                            </div>
+
+                            <div class="mt-6">
+                                <p class="text-4xl font-bold text-red-600">{{ $product->price }} ₴</p>
+                                <p class="text-lg text-gray-400 line-through">45 360 ₴</p>
+                                <p class="text-sm text-gray-600">Безкоштовна доставка від 5000 грн</p>
+                            </div>
                         </div>
 
-                        <div class="text-gray-500 mt-2">
-                            Виробник: <span class="font-semibold">{{ $product->manufacturer ?? 'N/A' }}</span><br>
-                            Наявність: <span class="font-semibold text-green-600">На складі</span><br>
-                            Код товару: <span class="font-semibold">{{ $product->code ?? 'N/A' }}</span>
-                        </div>
-
-                        <div class="mt-6">
-                            <p class="text-4xl font-bold text-red-600">{{ $product->price }} ₴</p>
-                            <p class="text-lg text-gray-400 line-through">45 360 ₴</p>
-                            <p class="text-sm text-gray-600">Безкоштовна доставка від 5000 грн</p>
-                        </div>
-
-                        <form action="{{ route('cart.add') }}" method="POST">
+                        <form action="{{ route('cart.add') }}" method="POST" class="mt-6">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <input type="hidden" name="price" value="{{ $product->price }}">
-                            <div class="mt-6 flex space-x-4">
-                                <input type="number" name="quantity" value="1" min="1" class="border rounded-lg py-2 px-4 w-20" />
-                                <button type="submit" class="btn bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
+                            <div class="flex space-x-4">
+                                <input type="number" name="quantity" value="1" min="1" class="border rounded-lg py-2 px-4 w-20 focus:outline-none focus:ring-2 focus:ring-red-500" />
+                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg">
                                     Купити
                                 </button>
                             </div>
