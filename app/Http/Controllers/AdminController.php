@@ -30,22 +30,25 @@ class AdminController extends Controller
             'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
+    
+        $imagePath = null; 
+    
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public'); 
-        } else {
-            $imagePath = null; 
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $imagePath = 'images/' . $imageName; 
         }
-
+    
         Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'quantity' => $request->quantity,
             'category_id' => $request->category_id,
-            'image' => $imagePath,
+            'image' => $imagePath, 
         ]);
-
+    
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
@@ -67,9 +70,11 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public'); 
-            $product->image = $imagePath; 
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $imagePath = 'images/' . $imageName; 
         }
+    
 
         $product->update([
             'name' => $request->name,
@@ -77,7 +82,7 @@ class AdminController extends Controller
             'price' => $request->price,
             'quantity' => $request->quantity,
             'category_id' => $request->category_id,
-            // 'image' => $product->image, 
+             'image' =>  $imagePath, 
         ]);
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
