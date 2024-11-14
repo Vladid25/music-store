@@ -13,7 +13,7 @@
                         <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Name: Z to A</option>
                     </select>
                     <input type="text" name="search" placeholder="Search products..." value="{{ request('search') }}" class="border rounded-md p-2" />
-                    <button type="submit" class="bg-blue-500 text-white rounded-md p-2">Filter</button>
+                    <button type="submit" class="bg-blue-500 text-black rounded-md p-2">Filter</button>
                 </form>
             </div>
         </div>
@@ -26,7 +26,7 @@
                         <h5 class="text-lg font-semibold">{{ $product->name }}</h5>
                         <p class="text-gray-700 text-sm mt-2">{{ Str::limit($product->description, 80) }}</p>
                         <p class="text-gray-900 font-bold mt-4">Price: ${{ $product->price }}</p>
-                        <a href='{{ route('products.details', $product->id) }}' class="block mt-4 bg-blue-500 text-white text-center py-2 rounded hover:bg-blue-600 transition duration-200">
+                        <a href='{{ route('products.details', $product->id) }}' class="block mt-4 bg-blue-500 text-black text-center py-2 rounded hover:bg-blue-600 transition duration-200">
                             View Details
                         </a>
                     </div>
