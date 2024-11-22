@@ -20,6 +20,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
+    
+    Route::get('/chat', function (){
+        return view('chat.chat');
+    })->name('chat');
 
     Route::prefix('admin')->group(function () {
         Route::get('/', function () {
