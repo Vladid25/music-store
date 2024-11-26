@@ -1,70 +1,60 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-white shadow rounded-lg p-6">
-    <h2 class="text-xl font-bold mb-4">Chat Room</h2>
+<div id="chat">
+    <div id="messages" class="h-96 overflow-y-auto border p-4 bg-gray-50 mb-4"></div>
 
-    <div id="chat-container" class="border rounded-lg p-4 h-96 overflow-y-auto bg-gray-50 mb-4">
-        <ul id="messages" class="space-y-2">
-        </ul>
-    </div>
-
-    <form id="chat-form" class="flex space-x-2">
-        <input 
-            type="text" 
-            id="message" 
-            class="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-            placeholder="Type your message..."
-            autocomplete="off"
-        >
-        <button 
-            type="submit" 
-            class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600">
-            Send
-        </button>
+    <form id="chat-form">
+        <input id="message" type="text" placeholder="Type a message..." class="border rounded p-2 w-full">
+        <button type="submit" class="bg-blue-500 text-white rounded px-4 py-2 mt-2">Send</button>
     </form>
 </div>
 @endsection
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const chatContainer = document.getElementById('chat-container');
-        const messageList = document.getElementById('messages');
-        const chatForm = document.getElementById('chat-form');
-        const messageInput = document.getElementById('message');
+    const toUserId = {{ $toUserId }}; 
+    const messagesContainer = document.getElementById('messages');
 
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    const socket = new WebSocket('ws://localhost:8080');
 
-            const message = messageInput.value.trim();
-            if (message === '') return;
+    socket.onopen = () => {
+        console.log('Connected to WebSocket');
+    };
 
-            try {
-                await fetch('/send-message', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({ message })
-                });
-            } catch (error) {
-                console.error('Failed to send message:', error);
-            }
+    socket.onmessage = function(event) {
+        const message = JSON.parse(event.data); 
+        appendMessage(message);
+    };
 
-            messageInput.value = '';
-        });
+    document.getElementById('chat-form').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-        window.Echo.channel('chat')
-            .listen('MessageSent', (e) => {
-                const newMessage = document.createElement('li');
-                newMessage.classList.add('p-2', 'bg-gray-200', 'rounded-lg', 'shadow');
-                newMessage.textContent = e.message;
+        const content = document.getElementById('message').value;
+        const message = { to_user_id: toUserId, content };
 
-                messageList.appendChild(newMessage);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            });
+        console.log('Sending message:', message);
+
+        socket.send(JSON.stringify(message));
+
+        document.getElementById('message').value = '';
     });
+
+    function appendMessage(message) {
+        const div = document.createElement('div');
+        div.textContent = `[User ${message.to_user_id}]: ${message.content}`;
+        div.classList.add('p-2', 'bg-gray-200', 'rounded', 'mb-2');
+        messagesContainer.appendChild(div);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+
+    socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+    };
+
+    socket.onclose = () => {
+        console.log('WebSocket connection closed');
+    };
 </script>
 @endpush

@@ -14,6 +14,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
             </div>
 
             <div class="relative">
